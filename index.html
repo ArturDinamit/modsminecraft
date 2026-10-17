@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft Mods</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+:root {
+  --bg: #0c1019;
+  --text: #f5f7ff;
+  --muted: #9da6b8;
+  --panel: rgba(255,255,255,.07);
+  --border: rgba(255,255,255,.13);
+  --accent: #53dc91;
+}
+body.light {
+  --bg: #edf2f8;
+  --text: #192333;
+  --muted: #657084;
+  --panel: rgba(255,255,255,.65);
+  --border: rgba(20,30,50,.12);
+  --accent: #168b56;
+}
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  transition: background .3s, color .3s;
+}
+body::before {
+  content: "";
+  position: fixed;
+  width: 280px;
+  height: 280px;
+  top: -120px;
+  right: -100px;
+  background: #38ce8050;
+  filter: blur(110px);
+  pointer-events: none;
+}
+header {
+  padding: 30px 22px 12px;
+}
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+}
+.logo span {
+  color: var(--accent);
+}
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 8px;
+}
+main {
+  padding: 20px;
+  padding-bottom: 115px;
+  max-width: 850px;
+  margin: auto;
+}
+h1 {
+  font-size: 27px;
+  margin: 12px 0 25px;
+}
+.empty {
+  min-height: 270px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 25px;
+}
+.empty-icon {
+  font-size: 50px;
+  margin-bottom: 16px;
+}
+.empty strong {
+  font-size: 20px;
+}
+.empty p {
+  color: var(--muted);
+  font-size: 14px;
+}
+.settings-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.settings-card label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 13px;
+}
+select {
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+}
+nav {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 36px);
+  max-width: 420px;
+  display: flex;
+  padding: 8px;
+  border-radius: 23px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: 0 12px 35px #0002;
+  z-index: 10;
+}
+nav button {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 16px;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: .25s;
+}
+nav button.active {
+  color: var(--accent);
+  background: var(--panel);
+  font-weight: bold;
+}
+nav button .symbol {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+.page {
+  display: none;
+  animation: appear .25s ease;
+}
+.page.active {
+  display: block;
+}
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MINE<span>MODS</span></div>
+  <div class="subtitle" data-i18n="subtitle">
+    Моды для Minecraft Bedrock
+  </div>
+</header>
+
+<main>
+  <section id="mods" class="page active">
+    <h1 data-i18n="mods">Моды</h1>
+    <div class="empty">
+      <div class="empty-icon">📦</div>
+      <strong data-i18n="empty">Тут пока пусто</strong>
+      <p data-i18n="soon">
+        Скоро здесь появятся моды!
+      </p>
+    </div>
+  </section>
+
+  <section id="settings" class="page">
+    <h1 data-i18n="settings">Настройки</h1>
+
+    <div class="settings-card">
+      <label data-i18n="theme">Тема сайта</label>
+      <select id="themeSelect">
+        <option value="dark" data-i18n="dark">
+          Тёмная
+        </option>
+        <option value="light" data-i18n="light">
+          Светлая
+        </option>
+      </select>
+    </div>
+
+    <div class="settings-card">
+      <label data-i18n="language">Язык</label>
+      <select id="langSelect">
+        <option value="ru">Русский</option>
+        <option value="pl">Polski</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <button id="modsBtn" class="active"
+          onclick="showPage('mods')">
+    <span class="symbol">▦</span>
+    <span data-i18n="mods">Моды</span>
+  </button>
+
+  <button id="settingsBtn"
+          onclick="showPage('settings')">
+    <span class="symbol">⚙</span>
+    <span data-i18n="settings">Настройки</span>
+  </button>
+</nav>
+
+<script>
+const translations = {
+  ru: {
+    subtitle: "Моды для Minecraft Bedrock",
+    mods: "Моды",
+    settings: "Настройки",
+    empty: "Тут пока пусто",
+    soon: "Скоро здесь появятся моды!",
+    theme: "Тема сайта",
+    language: "Язык",
+    dark: "Тёмная",
+    light: "Светлая"
+  },
+  pl: {
+    subtitle: "Mody do Minecraft Bedrock",
+    mods: "Mody",
+    settings: "Ustawienia",
+    empty: "Na razie jest tu pusto",
+    soon: "Wkrótce pojawią się tutaj mody!",
+    theme: "Motyw strony",
+    language: "Język",
+    dark: "Ciemny",
+    light: "Jasny"
+  },
+  en: {
+    subtitle: "Mods for Minecraft Bedrock",
+    mods: "Mods",
+    settings: "Settings",
+    empty: "Nothing here yet",
+    soon: "Mods are coming soon!",
+    theme: "Website theme",
+    language: "Language",
+    dark: "Dark",
+    light: "Light"
+  }
+};
+
+const themeSelect =
+  document.getElementById("themeSelect");
+const langSelect =
+  document.getElementById("langSelect");
+
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(el => {
+    el.classList.toggle("active", el.id === page);
+  });
+
+  document.querySelectorAll("nav button").forEach(el => {
+    el.classList.remove("active");
+  });
+
+  document.getElementById(page + "Btn")
+    .classList.add("active");
+}
+
+function setTheme(theme) {
+  document.body.classList.toggle(
+    "light", theme === "light"
+  );
+  themeSelect.value = theme;
+  localStorage.setItem("theme", theme);
+}
+
+function setLanguage(lang) {
+  const dict = translations[lang] || translations.ru;
+
+  document.querySelectorAll("[data-i18n]")
+    .forEach(el => {
+      const key = el.dataset.i18n;
+      if (dict[key]) el.textContent = dict[key];
+    });
+
+  document.documentElement.lang = lang;
+  langSelect.value = lang;
+  localStorage.setItem("language", lang);
+}
+
+themeSelect.addEventListener("change", () => {
+  setTheme(themeSelect.value);
+});
+
+langSelect.addEventListener("change", () => {
+  setLanguage(langSelect.value);
+});
+
+setTheme(localStorage.getItem("theme") || "dark");
+setLanguage(localStorage.getItem("language") || "ru");
+</script>
+</body>
+</html>
